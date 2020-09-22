@@ -38,7 +38,7 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.State = false;
             thd_temp.Pan = gameWatcher.panel_CrewImp;
             thd_temp.Lab = label_start;
-            thd_temp.FoundVars = new List<string>();
+            thd_temp.Lab_o = label_start_o;
 
             thd_temp.LookFor = new List<string>();
             thd_temp.LookFor.Add("crewmate");
@@ -60,10 +60,9 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.State = false;
             thd_temp.Pan = gameWatcher.panel_TabletCorner;
             thd_temp.Lab = label_tabletcorner;
-            //thd_temp.FoundVars = new List<string>();
+            thd_temp.Lab_o = label_tabletcorner_o;
             thd_temp.Px = true;
             thd_temp.PxColors = new Color[4];
-            //thd_temp.LookFor = new List<string>();
 
             AS.Add(thd_temp);
 
@@ -75,7 +74,7 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.State = false;
             thd_temp.Pan = gameWatcher.panel_WinDef;
             thd_temp.Lab = label_end;
-            thd_temp.FoundVars = new List<string>();
+            thd_temp.Lab_o = label_end_o;
 
             thd_temp.LookFor = new List<string>();
             thd_temp.LookFor.Add("UICTDI\"!");
@@ -84,12 +83,6 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.LookFor.Add("Defeat");
 
             AS.Add(thd_temp);
-
-
-            AS[0].Enable = false;
-            AS[1].Enable = false;
-            AS[2].Enable = false;
-            timer_tester.Start();
         }
 
         private void ShowButton(object sender)
@@ -99,7 +92,7 @@ namespace Among_Us_TS3BotUpdate
                 string ctrlName = ((Control)sender).Name;
                 if (ctrlName == item.Lab.Name)
                 {
-                    MessageBox.Show(GetTextFromPanel(item));
+                    MessageBox.Show(GetTextFromPanel(item).ToString());
                     item.Pan.BackColor = Color.White;
                     Thread CallBack = new Thread(() => {
                         Thread.Sleep(2000);
@@ -110,7 +103,7 @@ namespace Among_Us_TS3BotUpdate
             }
         }
 
-        private string GetTextFromPanel(AmongState item)
+        private bool GetTextFromPanel(AmongState item)
         {
             Bitmap img = capturearea(item.Pan);
             if (item.Px)
@@ -120,16 +113,12 @@ namespace Among_Us_TS3BotUpdate
                 item.PxColors[2] = img.GetPixel(35, 24); //143, 151, 164    8f97a4
                 item.PxColors[3] = img.GetPixel(15, 15); //132, 139, 150    848b96
 
-
-                string ret = "";
-                bool bret = true;
                 for (int i = 0; i < item.PxColors.Length; i++)
                 {
-                    ret += "" + item.PxColors[i].ToString() + " | " + PxLookFor[i].ToString() + "\n\r";
                     if (item.PxColors[i] != PxLookFor[i])
-                        bret = false;
+                        return false;
                 }
-                return ret + bret;
+                return true;
             }
             else
             {
@@ -137,11 +126,18 @@ namespace Among_Us_TS3BotUpdate
                 {
                     item.Engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
                     Page page = item.Engine.Process(img, PageSegMode.Auto);
-                    return page.GetText();
+                    foreach (var element in item.LookFor)
+                    {
+                        string p = page.GetText();
+                        item.Lab_o.Text = p;
+                        if (p.Contains(element))
+                            return true;
+                    }
+                    return false;
                 }
                 catch (Exception)
                 {
-                    return null;
+                    return false ;
                     throw;
                 }
             }
@@ -157,86 +153,55 @@ namespace Among_Us_TS3BotUpdate
             return tmpBmp;
         }
 
-        private void SaveData()
-        {
-            foreach (var item in AS)
-            {
-                if (!item.Enable)
-                    continue;
-
-                using (StreamWriter sr = new StreamWriter(@"fnd\" + DateTime.Now.ToString("MM-dd_HH-mm-ss")+ "_" + item.NameOf + ".txt"))
-                {
-                    foreach (var element in item.FoundVars)
-                    {
-                        if (element != null) sr.WriteLine(element);
-                    }
-                }
-            }
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveData();
-        }
-
         private void timer_start_Tick(object sender, EventArgs e)
         {
+            
             foreach (var item in AS)
             {
                 if (item.Enable)
                 {
                     item.Lab.BackColor = Color.Yellow;
-                    item.FoundVars.Add(GetTextFromPanel(item));
+                    if (GetTextFromPanel(item))
+                    {
+                        item.Lab.BackColor = Color.Green;
+                    }
                 }
                 else
-                    item.Lab.BackColor = Color.White;
+                    item.Lab.BackColor = Color.Black;
+
             }
         }
 
-        private void button_save_Click(object sender, EventArgs e)
-        {
-            SaveData();
-        }
-
-        private void label_start_Click(object sender, EventArgs e)
+        private void label_ShowClick(object sender, EventArgs e)
         {
             ShowButton(sender);
         }
 
-        private void label_vote_start_Click(object sender, EventArgs e)
+        private void button_enable_Click(object sender, EventArgs e)
         {
-            ShowButton(sender);
+            timer_tester.Enabled = !timer_tester.Enabled;
+            button_enable.BackColor = timer_tester.Enabled ? Color.Lime : Color.Red;
         }
 
-        private void label_vote_under_Click(object sender, EventArgs e)
+        private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            ShowButton(sender);
-        }
-
-        private void label_vote_end_Click(object sender, EventArgs e)
-        {
-            ShowButton(sender);
-        }
-
-        private void label_end_Click(object sender, EventArgs e)
-        {
-            ShowButton(sender);
+            Application.Exit();
         }
     }
     public class AmongState
     {
         public string NameOf;
-        public bool State;
+        public bool State = false;
 
         public bool Px = false;
 
-        public List<string> FoundVars;
         public List<string> LookFor;
 
         public Label Lab;
+        public Label Lab_o;
         public Panel Pan;
 
-        public bool Enable;
+        public bool Enable = true;
 
         public TesseractEngine Engine;
 
