@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,15 +18,32 @@ namespace Among_Us_TS3BotUpdate
     
     public partial class Form1 : Form
     {
+        private bool Mute = false;
+        private static MySqlConnection connection = new MySqlConnection("datasource=5.189.148.170;port=3306;username=demoanalis893;password=EbY7a7aWuLy5AqA");
+        private MySqlCommand sql_send_mute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '1' WHERE `MuteTable`.`id` = 1;", connection);
+        private MySqlCommand sql_send_unmute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '0' WHERE `MuteTable`.`id` = 1;", connection);
+        
         private GameWatcher gameWatcher = new GameWatcher();
-        private static int AwaitMils = 200;
         private List<AmongState> AS = new List<AmongState>();
         //private TesseractEngine engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
         private Color[] PxLookFor = new Color[4];
         public Form1()
         {
-            InitializeComponent();
+            try
+            {
+                connection.Open();
+                sql_send_unmute.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Application.Exit();
+            }
+
             
+
+            InitializeComponent();
+
             gameWatcher.Show();
 
             PxLookFor[0] = ColorTranslator.FromHtml("#b4bfcc");
@@ -35,10 +53,12 @@ namespace Among_Us_TS3BotUpdate
 
             AmongState thd_temp = new AmongState();
             thd_temp.NameOf = "Start";
-            thd_temp.State = false;
+            thd_temp.Mute = true;
+            thd_temp.Enable = true;
             thd_temp.Pan = gameWatcher.panel_CrewImp;
             thd_temp.Lab = label_start;
             thd_temp.Lab_o = label_start_o;
+            thd_temp.Size = thd_temp.Pan.ClientSize;
 
             thd_temp.LookFor = new List<string>();
             thd_temp.LookFor.Add("crewmate");
@@ -57,10 +77,12 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp = new AmongState();
             thd_temp.NameOf = "TabletCorner";
-            thd_temp.State = false;
+            thd_temp.Mute = false;
             thd_temp.Pan = gameWatcher.panel_TabletCorner;
             thd_temp.Lab = label_tabletcorner;
             thd_temp.Lab_o = label_tabletcorner_o;
+            thd_temp.Size = thd_temp.Pan.ClientSize;
+
             thd_temp.Px = true;
             thd_temp.PxColors = new Color[4];
 
@@ -71,10 +93,11 @@ namespace Among_Us_TS3BotUpdate
             //-------------------------------------------------------------
             thd_temp = new AmongState();
             thd_temp.NameOf = "End";
-            thd_temp.State = false;
+            thd_temp.Mute = false;
             thd_temp.Pan = gameWatcher.panel_WinDef;
             thd_temp.Lab = label_end;
             thd_temp.Lab_o = label_end_o;
+            thd_temp.Size = thd_temp.Pan.ClientSize;
 
             thd_temp.LookFor = new List<string>();
             thd_temp.LookFor.Add("UICTDI\"!");
@@ -105,7 +128,7 @@ namespace Among_Us_TS3BotUpdate
 
         private bool GetTextFromPanel(AmongState item)
         {
-            Bitmap img = capturearea(item.Pan);
+            Bitmap img = capturearea(item);
             if (item.Px)
             {
                 item.PxColors[0] = img.GetPixel(35, 2); //180, 191, 204     b4bfcc
@@ -137,20 +160,19 @@ namespace Among_Us_TS3BotUpdate
                 }
                 catch (Exception)
                 {
-                    return false ;
+                    return false;
                     throw;
                 }
             }
             
         }
 
-        private Bitmap capturearea(Control control)
+        private Bitmap capturearea(AmongState item)
         {
-            Size size = control.ClientSize;
-            Bitmap tmpBmp = new Bitmap(size.Width, size.Height);
-            Graphics g = Graphics.FromImage(tmpBmp);
-            g.CopyFromScreen(control.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(size.Width, size.Height));
-            return tmpBmp;
+            item.Bmp = new Bitmap(item.Size.Width, item.Size.Height);
+            Graphics g = Graphics.FromImage(item.Bmp);
+            g.CopyFromScreen(item.Pan.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(item.Size.Width, item.Size.Height));
+            return item.Bmp;
         }
 
         private void timer_start_Tick(object sender, EventArgs e)
@@ -164,6 +186,36 @@ namespace Among_Us_TS3BotUpdate
                     if (GetTextFromPanel(item))
                     {
                         item.Lab.BackColor = Color.Green;
+                        try
+                        {
+                            if (item.NameOf == "Start" && Mute == false)
+                            {
+                                sql_send_mute.ExecuteNonQuery();
+                                Mute = true;
+                                AS[0].Enable = false;
+                                AS[1].Enable = true;
+                                AS[2].Enable = true;
+                            }
+
+                            else if (item.NameOf == "End" && Mute == true)
+                            {
+                                sql_send_unmute.ExecuteNonQuery();
+                                Mute = false;
+                                AS[0].Enable = true;
+                                AS[1].Enable = false;
+                                AS[2].Enable = false;
+                            }
+                            else if(item.NameOf == "TabletCorner" && Mute == true)
+                            {
+                                sql_send_unmute.ExecuteNonQuery();
+                                Mute = false;
+                            }
+                        }catch (Exception) {}
+                    }
+                    else if (item.NameOf == "TabletCorner" && Mute == false)
+                    {
+                        sql_send_mute.ExecuteNonQuery();
+                        Mute = true;
                     }
                 }
                 else
@@ -191,7 +243,7 @@ namespace Among_Us_TS3BotUpdate
     public class AmongState
     {
         public string NameOf;
-        public bool State = false;
+        public bool Mute;
 
         public bool Px = false;
 
@@ -201,7 +253,10 @@ namespace Among_Us_TS3BotUpdate
         public Label Lab_o;
         public Panel Pan;
 
-        public bool Enable = true;
+        public bool Enable = false;
+
+        public Size Size;
+        public Bitmap Bmp;
 
         public TesseractEngine Engine;
 
