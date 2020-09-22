@@ -151,9 +151,8 @@ namespace Among_Us_TS3BotUpdate
                     Page page = item.Engine.Process(img, PageSegMode.Auto);
                     foreach (var element in item.LookFor)
                     {
-                        string p = page.GetText();
-                        item.Lab_o.Text = p;
-                        if (p.Contains(element))
+                        item.Lab_o.Text = page.GetText(); //System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
+                        if (item.Lab_o.Text.Contains(element))
                             return true;
                     }
                     return false;
@@ -161,7 +160,6 @@ namespace Among_Us_TS3BotUpdate
                 catch (Exception)
                 {
                     return false;
-                    throw;
                 }
             }
             
@@ -169,9 +167,16 @@ namespace Among_Us_TS3BotUpdate
 
         private Bitmap capturearea(AmongState item)
         {
-            item.Bmp = new Bitmap(item.Size.Width, item.Size.Height);
-            Graphics g = Graphics.FromImage(item.Bmp);
-            g.CopyFromScreen(item.Pan.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(item.Size.Width, item.Size.Height));
+            try
+            {
+                item.Bmp = new Bitmap(item.Size.Width, item.Size.Height); //System.ArgumentException: 'Parameter is not valid.'
+                Graphics g = Graphics.FromImage(item.Bmp);
+                g.CopyFromScreen(item.Pan.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(item.Size.Width, item.Size.Height));
+            }
+            catch (Exception)
+            {
+            }
+            
             return item.Bmp;
         }
 
