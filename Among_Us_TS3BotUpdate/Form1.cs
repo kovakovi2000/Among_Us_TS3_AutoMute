@@ -37,7 +37,9 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.LookFor = new List<string>();
             thd_temp.LookFor.Add("crewmate");
             thd_temp.LookFor.Add("Brewmate");
-            thd_temp.LookFor.Add("Crewmate");
+            thd_temp.LookFor.Add("Crewmate"); 
+            thd_temp.LookFor.Add("Crewma t8");
+
 
 
             AS.Add(thd_temp);
@@ -79,12 +81,38 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.Pan = gameWatcher.panel_WinDef;
             thd_temp.Lab = label_end;
             thd_temp.FoundVars = new List<string>();
+
+            thd_temp.LookFor = new List<string>();
+            thd_temp.LookFor.Add("UICTDI\"!");
+            thd_temp.LookFor.Add("UiCtOf‘U");
+            thd_temp.LookFor.Add("Uictoru");
+
             AS.Add(thd_temp);
 
-            AS[0].Enable = true;
-            AS[1].Enable = true;
-            AS[4].Enable = true;
+            AS[0].Enable = false;
+            AS[1].Enable = false;
+            AS[2].Enable = false;
+            AS[3].Enable = false;
+            AS[4].Enable = false;
             timer_tester.Start();
+        }
+
+        private void ShowButton(object sender)
+        {
+            foreach (var item in AS)
+            {
+                string ctrlName = ((Control)sender).Name;
+                if (ctrlName == item.Lab.Name)
+                {
+                    MessageBox.Show(GetTextFromPanel(item));
+                    item.Pan.BackColor = Color.White;
+                    Thread CallBack = new Thread(() => {
+                        Thread.Sleep(2000);
+                        item.Pan.BackColor = Color.Lime;
+                    });
+                    CallBack.Start();
+                }
+            }
         }
 
         private string GetTextFromPanel(AmongState item)
@@ -117,6 +145,9 @@ namespace Among_Us_TS3BotUpdate
         {
             foreach (var item in AS)
             {
+                if (!item.Enable)
+                    continue;
+
                 using (StreamWriter sr = new StreamWriter(@"fnd\" + DateTime.Now.ToString("MM-dd_HH-mm-ss")+ "_" + item.NameOf + ".txt"))
                 {
                     foreach (var element in item.FoundVars)
@@ -153,27 +184,27 @@ namespace Among_Us_TS3BotUpdate
 
         private void label_start_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GetTextFromPanel(AS[0]));
+            ShowButton(sender);
         }
 
         private void label_vote_start_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GetTextFromPanel(AS[1]));
+            ShowButton(sender);
         }
 
         private void label_vote_under_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GetTextFromPanel(AS[2]));
+            ShowButton(sender);
         }
 
         private void label_vote_end_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GetTextFromPanel(AS[3]));
+            ShowButton(sender);
         }
 
         private void label_end_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GetTextFromPanel(AS[4]));
+            ShowButton(sender);
         }
     }
     public class AmongState
