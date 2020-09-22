@@ -49,6 +49,7 @@ namespace Among_Us_TS3BotUpdate
             panel_p9.BackColor = Color.Lime;
             panel_VoteProcEnd.BackColor = Color.Lime;
             panel_WinDef.BackColor = Color.Lime;
+            panel_TabletCorner.BackColor = Color.Lime;
         }
     }
 }

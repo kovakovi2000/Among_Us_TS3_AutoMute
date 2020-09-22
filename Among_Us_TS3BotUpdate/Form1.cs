@@ -21,11 +21,17 @@ namespace Among_Us_TS3BotUpdate
         private static int AwaitMils = 200;
         private List<AmongState> AS = new List<AmongState>();
         //private TesseractEngine engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
+        private Color[] PxLookFor = new Color[4];
         public Form1()
         {
             InitializeComponent();
             
             gameWatcher.Show();
+
+            PxLookFor[0] = ColorTranslator.FromHtml("#b4bfcc");
+            PxLookFor[1] = ColorTranslator.FromHtml("#a2acb7");
+            PxLookFor[2] = ColorTranslator.FromHtml("#8f97a4");
+            PxLookFor[3] = ColorTranslator.FromHtml("#848b96");
 
             AmongState thd_temp = new AmongState();
             thd_temp.NameOf = "Start";
@@ -39,6 +45,7 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.LookFor.Add("Brewmate");
             thd_temp.LookFor.Add("Crewmate"); 
             thd_temp.LookFor.Add("Crewma t8");
+            thd_temp.LookFor.Add("Impostor");
 
 
 
@@ -49,27 +56,15 @@ namespace Among_Us_TS3BotUpdate
 
 
             thd_temp = new AmongState();
-            thd_temp.NameOf = "VoteStart";
+            thd_temp.NameOf = "TabletCorner";
             thd_temp.State = false;
-            thd_temp.Pan = gameWatcher.panel_VoteProcEnd;
-            thd_temp.Lab = label_vote_start;
-            thd_temp.FoundVars = new List<string>();
-            AS.Add(thd_temp);
+            thd_temp.Pan = gameWatcher.panel_TabletCorner;
+            thd_temp.Lab = label_tabletcorner;
+            //thd_temp.FoundVars = new List<string>();
+            thd_temp.Px = true;
+            thd_temp.PxColors = new Color[4];
+            //thd_temp.LookFor = new List<string>();
 
-            thd_temp = new AmongState();
-            thd_temp.NameOf = "VoteUnder";
-            thd_temp.State = false;
-            thd_temp.Pan = gameWatcher.panel_VoteProcEnd;
-            thd_temp.Lab = label_vote_under;
-            thd_temp.FoundVars = new List<string>();
-            AS.Add(thd_temp);
-
-            thd_temp = new AmongState();
-            thd_temp.NameOf = "VoteEnd";
-            thd_temp.State = false;
-            thd_temp.Pan = gameWatcher.panel_VoteProcEnd;
-            thd_temp.Lab = label_vote_end;
-            thd_temp.FoundVars = new List<string>();
             AS.Add(thd_temp);
 
 
@@ -86,14 +81,14 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.LookFor.Add("UICTDI\"!");
             thd_temp.LookFor.Add("UiCtOf‘U");
             thd_temp.LookFor.Add("Uictoru");
+            thd_temp.LookFor.Add("Defeat");
 
             AS.Add(thd_temp);
+
 
             AS[0].Enable = false;
             AS[1].Enable = false;
             AS[2].Enable = false;
-            AS[3].Enable = false;
-            AS[4].Enable = false;
             timer_tester.Start();
         }
 
@@ -117,17 +112,38 @@ namespace Among_Us_TS3BotUpdate
 
         private string GetTextFromPanel(AmongState item)
         {
-            try
+            Bitmap img = capturearea(item.Pan);
+            if (item.Px)
             {
-                Bitmap img = capturearea(item.Pan);
-                item.Engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
-                Page page = item.Engine.Process(img, PageSegMode.Auto);
-                return page.GetText();
+                item.PxColors[0] = img.GetPixel(35, 2); //180, 191, 204     b4bfcc
+                item.PxColors[1] = img.GetPixel(35, 10); //162, 172, 183    a2acb7
+                item.PxColors[2] = img.GetPixel(35, 24); //143, 151, 164    8f97a4
+                item.PxColors[3] = img.GetPixel(15, 15); //132, 139, 150    848b96
+
+
+                string ret = "";
+                bool bret = true;
+                for (int i = 0; i < item.PxColors.Length; i++)
+                {
+                    ret += "" + item.PxColors[i].ToString() + " | " + PxLookFor[i].ToString() + "\n\r";
+                    if (item.PxColors[i] != PxLookFor[i])
+                        bret = false;
+                }
+                return ret + bret;
             }
-            catch (Exception)
+            else
             {
-                return "";
-                throw;
+                try
+                {
+                    item.Engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
+                    Page page = item.Engine.Process(img, PageSegMode.Auto);
+                    return page.GetText();
+                }
+                catch (Exception)
+                {
+                    return null;
+                    throw;
+                }
             }
             
         }
@@ -152,7 +168,7 @@ namespace Among_Us_TS3BotUpdate
                 {
                     foreach (var element in item.FoundVars)
                     {
-                        if (element != "") sr.WriteLine(element);
+                        if (element != null) sr.WriteLine(element);
                     }
                 }
             }
@@ -212,6 +228,8 @@ namespace Among_Us_TS3BotUpdate
         public string NameOf;
         public bool State;
 
+        public bool Px = false;
+
         public List<string> FoundVars;
         public List<string> LookFor;
 
@@ -221,6 +239,8 @@ namespace Among_Us_TS3BotUpdate
         public bool Enable;
 
         public TesseractEngine Engine;
+
+        public Color[] PxColors;
     }
 }
 

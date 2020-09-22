@@ -37,6 +37,7 @@
             this.label_end = new System.Windows.Forms.Label();
             this.timer_tester = new System.Windows.Forms.Timer(this.components);
             this.button_save = new System.Windows.Forms.Button();
+            this.label_tabletcorner = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label_state
@@ -118,12 +119,24 @@
             this.button_save.UseVisualStyleBackColor = true;
             this.button_save.Click += new System.EventHandler(this.button_save_Click);
             // 
+            // label_tabletcorner
+            // 
+            this.label_tabletcorner.AutoSize = true;
+            this.label_tabletcorner.Font = new System.Drawing.Font("Impact", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_tabletcorner.Location = new System.Drawing.Point(374, 137);
+            this.label_tabletcorner.Name = "label_tabletcorner";
+            this.label_tabletcorner.Size = new System.Drawing.Size(71, 26);
+            this.label_tabletcorner.TabIndex = 0;
+            this.label_tabletcorner.Text = "TABLET";
+            this.label_tabletcorner.Click += new System.EventHandler(this.label_end_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(473, 142);
+            this.ClientSize = new System.Drawing.Size(473, 172);
             this.Controls.Add(this.button_save);
+            this.Controls.Add(this.label_tabletcorner);
             this.Controls.Add(this.label_end);
             this.Controls.Add(this.label_vote_end);
             this.Controls.Add(this.label_vote_under);
@@ -148,6 +161,7 @@
         private System.Windows.Forms.Label label_end;
         private System.Windows.Forms.Timer timer_tester;
         private System.Windows.Forms.Button button_save;
+        private System.Windows.Forms.Label label_tabletcorner;
     }
 }
 

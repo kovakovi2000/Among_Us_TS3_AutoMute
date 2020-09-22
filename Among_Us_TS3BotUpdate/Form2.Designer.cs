@@ -57,6 +57,7 @@
             this.panel_WinDef = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.panel_TabletCorner = new System.Windows.Forms.Panel();
             this.panel_CrewImp.SuspendLayout();
             this.panel_VoteProcEnd.SuspendLayout();
             this.panel_p0.SuspendLayout();
@@ -330,12 +331,21 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // panel_TabletCorner
+            // 
+            this.panel_TabletCorner.BackColor = System.Drawing.Color.White;
+            this.panel_TabletCorner.Location = new System.Drawing.Point(199, 27);
+            this.panel_TabletCorner.Name = "panel_TabletCorner";
+            this.panel_TabletCorner.Size = new System.Drawing.Size(36, 25);
+            this.panel_TabletCorner.TabIndex = 4;
+            // 
             // GameWatcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lime;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.panel_TabletCorner);
             this.Controls.Add(this.panel_p9);
             this.Controls.Add(this.panel_p7);
             this.Controls.Add(this.panel_p3);
@@ -414,5 +424,6 @@
         public System.Windows.Forms.Panel panel_WinDef;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        public System.Windows.Forms.Panel panel_TabletCorner;
     }
 }
