@@ -25,7 +25,6 @@ namespace Among_Us_TS3BotUpdate
         
         private GameWatcher gameWatcher = new GameWatcher();
         private List<AmongState> AS = new List<AmongState>();
-        //private TesseractEngine engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
         private Color[] PxLookFor = new Color[4];
         public Form1()
         {
@@ -128,13 +127,20 @@ namespace Among_Us_TS3BotUpdate
 
         private bool GetTextFromPanel(AmongState item)
         {
-            Bitmap img = capturearea(item);
+            try
+            {
+                item.Bmp = new Bitmap(item.Size.Width, item.Size.Height); //System.ArgumentException: 'Parameter is not valid.'
+                Graphics g = Graphics.FromImage(item.Bmp);
+                g.CopyFromScreen(item.Pan.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(item.Size.Width, item.Size.Height));
+            }
+            catch (Exception) {}
+
             if (item.Px)
             {
-                item.PxColors[0] = img.GetPixel(35, 2); //180, 191, 204     b4bfcc
-                item.PxColors[1] = img.GetPixel(35, 10); //162, 172, 183    a2acb7
-                item.PxColors[2] = img.GetPixel(35, 24); //143, 151, 164    8f97a4
-                item.PxColors[3] = img.GetPixel(15, 15); //132, 139, 150    848b96
+                item.PxColors[0] = item.Bmp.GetPixel(35, 2); //180, 191, 204     b4bfcc
+                item.PxColors[1] = item.Bmp.GetPixel(35, 10); //162, 172, 183    a2acb7
+                item.PxColors[2] = item.Bmp.GetPixel(35, 24); //143, 151, 164    8f97a4
+                item.PxColors[3] = item.Bmp.GetPixel(15, 15); //132, 139, 150    848b96
 
                 for (int i = 0; i < item.PxColors.Length; i++)
                 {
@@ -148,7 +154,7 @@ namespace Among_Us_TS3BotUpdate
                 try
                 {
                     item.Engine = new TesseractEngine("./tessdata", "eng", EngineMode.Default);
-                    Page page = item.Engine.Process(img, PageSegMode.Auto);
+                    Page page = item.Engine.Process(item.Bmp, PageSegMode.Auto);
                     foreach (var element in item.LookFor)
                     {
                         item.Lab_o.Text = page.GetText(); //System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
@@ -163,21 +169,6 @@ namespace Among_Us_TS3BotUpdate
                 }
             }
             
-        }
-
-        private Bitmap capturearea(AmongState item)
-        {
-            try
-            {
-                item.Bmp = new Bitmap(item.Size.Width, item.Size.Height); //System.ArgumentException: 'Parameter is not valid.'
-                Graphics g = Graphics.FromImage(item.Bmp);
-                g.CopyFromScreen(item.Pan.PointToScreen(new Point(0, 0)), new Point(0, 0), new Size(item.Size.Width, item.Size.Height));
-            }
-            catch (Exception)
-            {
-            }
-            
-            return item.Bmp;
         }
 
         private void timer_start_Tick(object sender, EventArgs e)
