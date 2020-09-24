@@ -20,9 +20,9 @@ namespace Among_Us_TS3BotUpdate
     public partial class Form1 : Form
     {
         private bool Mute = false;
-        private static MySqlConnection connection = new MySqlConnection("datasource=5.189.148.170;port=3306;username=demoanalis893;password=EbY7a7aWuLy5AqA");
-        private MySqlCommand sql_send_mute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '1' WHERE `MuteTable`.`id` = 1;", connection);
-        private MySqlCommand sql_send_unmute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '0' WHERE `MuteTable`.`id` = 1;", connection);
+        private static readonly MySqlConnection connection = new MySqlConnection("datasource=127.0.0.1;port=3306;username=root;password=");
+        private readonly MySqlCommand sql_send_mute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '1' WHERE `MuteTable`.`id` = 1;", connection);
+        private readonly MySqlCommand sql_send_unmute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '0' WHERE `MuteTable`.`id` = 1;", connection);
         
         private GameWatcher gameWatcher = new GameWatcher();
         private List<AmongState> AS = new List<AmongState>();
@@ -55,17 +55,11 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp.Size = thd_temp.Pan.ClientSize;
 
-            thd_temp.PxColors = new Color[4];
-            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#8cffff");
-            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000");
-            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#8cffff");
-            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#8cffff");
-
-            thd_temp.PxLocation = new Point[4];
-            thd_temp.PxLocation[0] = new Point(25, 112);
-            thd_temp.PxLocation[1] = new Point(147, 123);
-            thd_temp.PxLocation[2] = new Point(867, 122);
-            thd_temp.PxLocation[3] = new Point(968, 82);
+            thd_temp.PxColors = new Color[4]; thd_temp.PxLocation = new Point[4];
+            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#8cffff"); thd_temp.PxLocation[0] = new Point(25, 112);
+            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000"); thd_temp.PxLocation[1] = new Point(147, 123);
+            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#8cffff"); thd_temp.PxLocation[2] = new Point(867, 122);
+            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#8cffff"); thd_temp.PxLocation[3] = new Point(968, 82);
 
             AS.Add(thd_temp);
 
@@ -79,17 +73,11 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp.Size = thd_temp.Pan.ClientSize;
 
-            thd_temp.PxColors = new Color[4];
-            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#ff1919");
-            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000");
-            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#ff1919");
-            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#ff1919");
-
-            thd_temp.PxLocation = new Point[4];
-            thd_temp.PxLocation[0] = new Point(74, 101);
-            thd_temp.PxLocation[1] = new Point(146, 124);
-            thd_temp.PxLocation[2] = new Point(820, 120);
-            thd_temp.PxLocation[3] = new Point(1064, 120);
+            thd_temp.PxColors = new Color[4];                           thd_temp.PxLocation = new Point[4];
+            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#ff1919"); thd_temp.PxLocation[0] = new Point(74, 101);
+            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000"); thd_temp.PxLocation[1] = new Point(146, 124);
+            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#ff1919"); thd_temp.PxLocation[2] = new Point(820, 120);
+            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#ff1919"); thd_temp.PxLocation[3] = new Point(1064, 120);
 
             AS.Add(thd_temp);
 
@@ -105,17 +93,11 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp.Size = thd_temp.Pan.ClientSize;
 
-            thd_temp.PxColors = new Color[4];
-            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#b4bfcc");
-            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#a2acb7");
-            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#8f97a4");
-            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#848b96");
-
-            thd_temp.PxLocation = new Point[4];
-            thd_temp.PxLocation[0] = new Point(35, 2);
-            thd_temp.PxLocation[1] = new Point(35, 10);
-            thd_temp.PxLocation[2] = new Point(35, 24);
-            thd_temp.PxLocation[3] = new Point(15, 15);
+            thd_temp.PxColors = new Color[4];                           thd_temp.PxLocation = new Point[4];
+            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#b4bfcc"); thd_temp.PxLocation[0] = new Point(35, 2);
+            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#a2acb7"); thd_temp.PxLocation[1] = new Point(35, 10);
+            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#8f97a4"); thd_temp.PxLocation[2] = new Point(35, 24);
+            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#848b96"); thd_temp.PxLocation[3] = new Point(15, 15);
 
             AS.Add(thd_temp);
 
@@ -129,17 +111,11 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp.Size = thd_temp.Pan.ClientSize;
 
-            thd_temp.PxColors = new Color[4];
-            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#008cff");
-            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000");
-            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#008cff");
-            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#008cff");
-
-            thd_temp.PxLocation = new Point[4];
-            thd_temp.PxLocation[0] = new Point(359, 88);
-            thd_temp.PxLocation[1] = new Point(403, 93);
-            thd_temp.PxLocation[2] = new Point(529, 69);
-            thd_temp.PxLocation[3] = new Point(697, 69);
+            thd_temp.PxColors = new Color[4];                           thd_temp.PxLocation = new Point[4];
+            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#008cff"); thd_temp.PxLocation[0] = new Point(359, 88);
+            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000"); thd_temp.PxLocation[1] = new Point(403, 93);
+            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#008cff"); thd_temp.PxLocation[2] = new Point(529, 69);
+            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#008cff"); thd_temp.PxLocation[3] = new Point(697, 69);
 
             AS.Add(thd_temp);
 
@@ -152,17 +128,11 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp.Size = thd_temp.Pan.ClientSize;
 
-            thd_temp.PxColors = new Color[4];
-            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#ff0000");
-            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000");
-            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#ff0000");
-            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#ff0000");
-
-            thd_temp.PxLocation = new Point[4];
-            thd_temp.PxLocation[0] = new Point(73, 75);
-            thd_temp.PxLocation[1] = new Point(261, 91);
-            thd_temp.PxLocation[2] = new Point(309, 95);
-            thd_temp.PxLocation[3] = new Point(611, 87);
+            thd_temp.PxColors = new Color[4];                           thd_temp.PxLocation = new Point[4];
+            thd_temp.PxColors[0] = ColorTranslator.FromHtml("#ff0000"); thd_temp.PxLocation[0] = new Point(73, 75);
+            thd_temp.PxColors[1] = ColorTranslator.FromHtml("#000000"); thd_temp.PxLocation[1] = new Point(261, 91);
+            thd_temp.PxColors[2] = ColorTranslator.FromHtml("#ff0000"); thd_temp.PxLocation[2] = new Point(309, 95);
+            thd_temp.PxColors[3] = ColorTranslator.FromHtml("#ff0000"); thd_temp.PxLocation[3] = new Point(611, 87);
 
             AS.Add(thd_temp);
         }
