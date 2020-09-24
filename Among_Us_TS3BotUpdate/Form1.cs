@@ -52,7 +52,6 @@ namespace Among_Us_TS3BotUpdate
 
             AmongState thd_temp = new AmongState();
             thd_temp.NameOf = "Start";
-            thd_temp.Mute = true;
             thd_temp.Enable = true;
             thd_temp.Pan = gameWatcher.panel_CrewImp;
             thd_temp.Lab = label_start;
@@ -76,7 +75,6 @@ namespace Among_Us_TS3BotUpdate
 
             thd_temp = new AmongState();
             thd_temp.NameOf = "TabletCorner";
-            thd_temp.Mute = false;
             thd_temp.Pan = gameWatcher.panel_TabletCorner;
             thd_temp.Lab = label_tabletcorner;
             thd_temp.Lab_o = label_tabletcorner_o;
@@ -92,7 +90,6 @@ namespace Among_Us_TS3BotUpdate
             //-------------------------------------------------------------
             thd_temp = new AmongState();
             thd_temp.NameOf = "End";
-            thd_temp.Mute = false;
             thd_temp.Pan = gameWatcher.panel_WinDef;
             thd_temp.Lab = label_end;
             thd_temp.Lab_o = label_end_o;
@@ -114,6 +111,9 @@ namespace Among_Us_TS3BotUpdate
                 string ctrlName = ((Control)sender).Name;
                 if (ctrlName == item.Lab.Name)
                 {
+                    item.Force = true;
+                    Thread.Sleep(2000);
+                    /*
                     MessageBox.Show(GetTextFromPanel(item).ToString());
                     item.Pan.BackColor = Color.White;
                     Thread CallBack = new Thread(() => {
@@ -121,6 +121,7 @@ namespace Among_Us_TS3BotUpdate
                         item.Pan.BackColor = Color.Lime;
                     });
                     CallBack.Start();
+                    */
                 }
             }
         }
@@ -179,8 +180,9 @@ namespace Among_Us_TS3BotUpdate
                 if (item.Enable)
                 {
                     item.Lab.BackColor = Color.Yellow;
-                    if (GetTextFromPanel(item))
+                    if (GetTextFromPanel(item) || item.Force)
                     {
+                        item.Force = false;
                         item.Lab.BackColor = Color.Green;
                         try
                         {
@@ -239,7 +241,7 @@ namespace Among_Us_TS3BotUpdate
     public class AmongState
     {
         public string NameOf;
-        public bool Mute;
+        public bool Force = false;
 
         public bool Px = false;
 
