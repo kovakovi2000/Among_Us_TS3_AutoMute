@@ -39,6 +39,9 @@
             this.label_start_o = new System.Windows.Forms.Label();
             this.label_tabletcorner_o = new System.Windows.Forms.Label();
             this.label_end_o = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label_refreshvalue = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // label_state
@@ -120,9 +123,8 @@
             this.label_start_o.ForeColor = System.Drawing.Color.White;
             this.label_start_o.Location = new System.Drawing.Point(93, 70);
             this.label_start_o.Name = "label_start_o";
-            this.label_start_o.Size = new System.Drawing.Size(35, 13);
+            this.label_start_o.Size = new System.Drawing.Size(0, 13);
             this.label_start_o.TabIndex = 3;
-            this.label_start_o.Text = "label1";
             // 
             // label_tabletcorner_o
             // 
@@ -130,9 +132,8 @@
             this.label_tabletcorner_o.ForeColor = System.Drawing.Color.White;
             this.label_tabletcorner_o.Location = new System.Drawing.Point(93, 96);
             this.label_tabletcorner_o.Name = "label_tabletcorner_o";
-            this.label_tabletcorner_o.Size = new System.Drawing.Size(35, 13);
+            this.label_tabletcorner_o.Size = new System.Drawing.Size(0, 13);
             this.label_tabletcorner_o.TabIndex = 3;
-            this.label_tabletcorner_o.Text = "label1";
             // 
             // label_end_o
             // 
@@ -140,9 +141,30 @@
             this.label_end_o.ForeColor = System.Drawing.Color.White;
             this.label_end_o.Location = new System.Drawing.Point(93, 122);
             this.label_end_o.Name = "label_end_o";
-            this.label_end_o.Size = new System.Drawing.Size(35, 13);
+            this.label_end_o.Size = new System.Drawing.Size(0, 13);
             this.label_end_o.TabIndex = 3;
-            this.label_end_o.Text = "label1";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(12, 146);
+            this.trackBar1.Maximum = 1000;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(205, 45);
+            this.trackBar1.TabIndex = 4;
+            this.trackBar1.Value = 200;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // label_refreshvalue
+            // 
+            this.label_refreshvalue.AutoSize = true;
+            this.label_refreshvalue.Font = new System.Drawing.Font("Impact", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_refreshvalue.ForeColor = System.Drawing.Color.White;
+            this.label_refreshvalue.Location = new System.Drawing.Point(222, 138);
+            this.label_refreshvalue.Name = "label_refreshvalue";
+            this.label_refreshvalue.Size = new System.Drawing.Size(45, 26);
+            this.label_refreshvalue.TabIndex = 0;
+            this.label_refreshvalue.Text = "200";
+            this.label_refreshvalue.Click += new System.EventHandler(this.label_ShowClick);
             // 
             // Form1
             // 
@@ -150,12 +172,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(275, 168);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label_end_o);
             this.Controls.Add(this.label_tabletcorner_o);
             this.Controls.Add(this.label_start_o);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button_enable);
             this.Controls.Add(this.label_tabletcorner);
+            this.Controls.Add(this.label_refreshvalue);
             this.Controls.Add(this.label_end);
             this.Controls.Add(this.label_start);
             this.Controls.Add(this.label_state);
@@ -164,6 +188,7 @@
             this.Text = "Form1";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,6 +206,8 @@
         private System.Windows.Forms.Label label_start_o;
         private System.Windows.Forms.Label label_tabletcorner_o;
         private System.Windows.Forms.Label label_end_o;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label_refreshvalue;
     }
 }
 

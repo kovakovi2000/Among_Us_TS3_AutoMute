@@ -272,7 +272,6 @@ namespace Among_Us_TS3BotUpdate
                     
                     if (GetTextFromPanel(item) || item.Force)
                     {
-                        item.Force = false;
                         item.Lab.BackColor = Color.Green;
                         if (item.ForceOff)
                         {
@@ -282,7 +281,7 @@ namespace Among_Us_TS3BotUpdate
                         }
                         try
                         {
-                            if (item.NameOf == "Start" && Mute == false)
+                            if (item.NameOf == "Start" && (Mute == false || item.Force))
                             {
                                 sql_send_mute.ExecuteNonQuery();
                                 Mute = true;
@@ -291,7 +290,7 @@ namespace Among_Us_TS3BotUpdate
                                 SetEnable("End",true);
                             }
 
-                            else if (item.NameOf == "End" && Mute == true)
+                            else if (item.NameOf == "End" && (Mute == true || item.Force))
                             {
                                 sql_send_unmute.ExecuteNonQuery();
                                 Mute = false;
@@ -299,7 +298,7 @@ namespace Among_Us_TS3BotUpdate
                                 SetEnable("TabletCorner",false);
                                 SetEnable("End",false);
                             }
-                            else if(item.NameOf == "TabletCorner" && Mute == true)
+                            else if(item.NameOf == "TabletCorner" && (Mute == true || item.Force))
                             {
                                 sql_send_unmute.ExecuteNonQuery();
                                 Mute = false;
@@ -314,7 +313,7 @@ namespace Among_Us_TS3BotUpdate
                 }
                 else
                     item.Lab.BackColor = Color.Black;
-
+                item.Force = false;
             }
         }
 
@@ -361,6 +360,12 @@ namespace Among_Us_TS3BotUpdate
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Location = new Point(0, 400);
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label_refreshvalue.Text = (trackBar1.Value < 10 ? 10 : trackBar1.Value).ToString();
+            timer_tester.Interval = trackBar1.Value < 10 ? 10 : trackBar1.Value;
         }
     }
     public class AmongState
