@@ -11,10 +11,15 @@ namespace Among_Us_TS3BotUpdate
     public partial class Form1 : Form
     {
         private bool Mute = false;
-        private static readonly MySqlConnection connection = new MySqlConnection("datasource=127.0.0.1;port=3306;username=root;password=");
-        private readonly MySqlCommand sql_send_mute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '1' WHERE `MuteTable`.`id` = 1;", connection);
-        private readonly MySqlCommand sql_send_unmute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '0' WHERE `MuteTable`.`id` = 1;", connection);
-        
+        private static MySqlConnection connection = new MySqlConnection("datasource=127.0.0.1;port=3306;username=root;password=");
+        private MySqlCommand sql_send_mute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '1' WHERE `MuteTable`.`id` = 1;", connection);
+        private MySqlCommand sql_send_unmute = new MySqlCommand("UPDATE `demoanalis893`.`MuteTable` SET `SQL_IsMuted` = '0' WHERE `MuteTable`.`id` = 1;", connection);
+
+        private Color[] p_Colors = new Color[12];
+
+        private Color DeadPlayer_Px = ColorTranslator.FromHtml("#751900");
+        private Point DeadPlayer_Location = new Point(67, 30);
+
         private GameWatcher gameWatcher = new GameWatcher();
         private List<AmongState> AS = new List<AmongState>();
         public Form1()
@@ -35,6 +40,20 @@ namespace Among_Us_TS3BotUpdate
             InitializeComponent();
 
             gameWatcher.Show();
+
+            p_Colors[0] = ColorTranslator.FromHtml("#c71013"); //red
+            p_Colors[1] = ColorTranslator.FromHtml("#142ed0"); //blue
+            p_Colors[2] = ColorTranslator.FromHtml("#13832d"); //green
+            p_Colors[3] = ColorTranslator.FromHtml("#ec55ba"); //pink
+            p_Colors[4] = ColorTranslator.FromHtml("#ef7d12"); //orange
+            p_Colors[5] = ColorTranslator.FromHtml("#f7f75c"); //yellow
+            p_Colors[6] = ColorTranslator.FromHtml("#3c4950"); //black
+            p_Colors[7] = ColorTranslator.FromHtml("#d7e2f1"); //white
+            p_Colors[8] = ColorTranslator.FromHtml("#6b30bc"); //purple
+            p_Colors[9] = ColorTranslator.FromHtml("#71491e"); //brown
+            p_Colors[10] = ColorTranslator.FromHtml("#39fddd"); //Cyan
+            p_Colors[11] = ColorTranslator.FromHtml("#4ff03a"); //lime
+            
 
             AmongState thd_temp = new AmongState();
             thd_temp.NameOf = "Start";
@@ -126,6 +145,19 @@ namespace Among_Us_TS3BotUpdate
             thd_temp.PxColors[3] = ColorTranslator.FromHtml("#ff0000"); thd_temp.PxLocation[3] = new Point(611, 87);
 
             AS.Add(thd_temp);
+
+            thd_temp = new AmongState();
+            thd_temp.NameOf = "Player0";
+
+            thd_temp.Pan = gameWatcher.panel_p0;
+            thd_temp.Lab = null;
+            thd_temp.Lab_o = null;
+
+            thd_temp.Size = thd_temp.Pan.ClientSize;
+
+            AS.Add(thd_temp);
+
+
         }
 
         private bool GetTextFromPanel(AmongState item)
